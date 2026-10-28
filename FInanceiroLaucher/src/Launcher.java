@@ -14,10 +14,9 @@ import java.util.zip.*;
  * @author RodolfoFonseca
  */
 public class Launcher extends JFrame{
-     private static final String SERVER =
-        "https://seudominio.com/atualizador/latest.properties";
+     private static final String SERVER = "https://financeirodev.api.hammertail.app/atualizador/latest.properties";
 
-    private static final String APP_NAME = "MeuSistema.jar";
+    private static final String APP_NAME = "FinanceiroDesktop.jar";
 
     private final Path root;
     private final Path appDir;
@@ -39,8 +38,8 @@ public class Launcher extends JFrame{
     private boolean busy = true;
 
     public Launcher() {
-        root = Paths.get(System.getProperty("user.dir"))
-                    .toAbsolutePath().normalize();
+        //root = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
+        root = getInstallRoot();
         appDir = root.resolve("app");
         configDir = root.resolve("config");
         historyFile = root.resolve("historico")
@@ -573,4 +572,23 @@ public class Launcher extends JFrame{
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Launcher::new);
     }
+    
+    private static Path getInstallRoot() {
+    try {
+        Path jar = Paths.get(
+            Launcher.class.getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()
+        );
+
+        return Files.isDirectory(jar)
+            ? jar.toAbsolutePath().normalize()
+            : jar.toAbsolutePath().normalize().getParent();
+
+    } catch (Exception e) {
+        throw new IllegalStateException(
+            "Não foi possível localizar o Launcher.", e);
+    }
+}
 }
