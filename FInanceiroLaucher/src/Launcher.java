@@ -14,7 +14,7 @@ import java.util.zip.*;
  * @author RodolfoFonseca
  */
 public class Launcher extends JFrame{
-     private static final String SERVER = "https://financeirodev.api.hammertail.app/atualizador/latest.properties";
+     private static final String SERVER = "https://financeirodev.api.hammertail.app/atualizador/releases.properties";
 
     private static final String APP_NAME = "FinanceiroDesktop.jar";
 
@@ -49,7 +49,7 @@ public class Launcher extends JFrame{
     }
 
     private void buildWindow() {
-        setTitle("MeuSistema - Atualizador");
+        setTitle("Financeiro Desktop - Atualizador");
         setSize(720, 440);
         setMinimumSize(new Dimension(600, 380));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -148,8 +148,8 @@ public class Launcher extends JFrame{
             release = remote;
             newVersion = required(remote, "version");
 
-            String packageUrl = required(remote, "package.url");
-            String expectedHash = required(remote, "package.sha256")
+            String packageUrl = required(remote, "packageUrl");
+            String expectedHash = required(remote, "sha256")
                 .trim().toLowerCase(Locale.ROOT);
 
             if (!expectedHash.matches("[0-9a-f]{64}")) {
@@ -171,7 +171,7 @@ public class Launcher extends JFrame{
                 action.setText("Atualizando...");
             });
 
-            loadReleaseImage(remote.getProperty("image.url", ""));
+            loadReleaseImage(remote.getProperty("image", ""));
 
             URL packageURL = new URL(packageUrl);
             URLConnection packageConnection = packageURL.openConnection();
@@ -180,7 +180,7 @@ public class Launcher extends JFrame{
 
             long total = packageConnection.getContentLengthLong();
 
-            downloadedZip = Files.createTempFile("meusistema-", ".zip");
+            downloadedZip = Files.createTempFile("financeiroDesktop-", ".zip");
 
             try (InputStream in = packageConnection.getInputStream();
                  OutputStream out = Files.newOutputStream(downloadedZip)) {
@@ -297,14 +297,38 @@ public class Launcher extends JFrame{
                     action.setText("Abrir sistema");
                 }
             } catch (Exception ex) {
-                status.setText("Não foi possível atualizar.");
-                changes.setText(rootMessage(ex));
-                action.setText("Tentar novamente");
-                action.removeActionListener(action.getActionListeners()[0]);
-                action.addActionListener(e -> {
-                    dispose();
-                    new Launcher();
-                });
+                Throwable causa = ex;
+
+    // Recupera a exceção original do SwingWorker
+    if (ex instanceof java.util.concurrent.ExecutionException
+            && ex.getCause() != null) {
+        causa = ex.getCause();
+    }
+
+    causa.printStackTrace();
+
+    String mensagem = causa.getMessage();
+
+    if (mensagem == null || mensagem.trim().isEmpty()) {
+        mensagem = causa.getClass().getName();
+    }
+
+    status.setText("Não foi possível atualizar.");
+    changes.setText(mensagem);
+    action.setText("Tentar novamente");
+
+    System.err.println("ERRO NA ATUALIZAÇÃO: " + mensagem);
+
+    for (java.awt.event.ActionListener listener
+            : action.getActionListeners()) {
+        action.removeActionListener(listener);
+    }
+
+    action.addActionListener(e -> {
+        dispose();
+        new Launcher();
+    });
+
             } finally {
                 if (downloadedZip != null) {
                     try {
