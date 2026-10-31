@@ -1,14 +1,17 @@
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
 /**
  * Layout moderno do launcher de atualização do sistema
+ *
  * @author RodolfoFonseca
  */
 public class JFTelaAtualizador extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFTelaAtualizador.class.getName());
 
     /**
@@ -17,36 +20,35 @@ public class JFTelaAtualizador extends javax.swing.JFrame {
     public JFTelaAtualizador() {
         initComponents();
         setTitle("Financeiro Desktop - Atualizador");
-    setSize(900, 560);
-    setMinimumSize(new java.awt.Dimension(760, 480));
-    setLocationRelativeTo(null);
-    setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        setSize(900, 560);
+        setMinimumSize(new java.awt.Dimension(760, 480));
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-    
-    status.setText("Verificando atualizações...");
-    percent.setText("0%");
-    version.setText("Versão instalada: desconhecida");
+        status.setText("Verificando atualizações...");
+        percent.setText("0%");
+        version.setText("Versão instalada: desconhecida");
 
-    image.setHorizontalAlignment(SwingConstants.CENTER);
-    image.setVerticalAlignment(SwingConstants.CENTER);
-    image.setText("Preparando atualização...");
+        image.setHorizontalAlignment(SwingConstants.CENTER);
+        image.setVerticalAlignment(SwingConstants.CENTER);
+        image.setText("Preparando atualização...");
 
-    changes.setEditable(false);
-    changes.setLineWrap(true);
-    changes.setWrapStyleWord(true);
-    changes.setFont(new Font("SansSerif", Font.PLAIN, 13));
-    changes.setText("Verificando se há uma nova versão...");
+        changes.setEditable(false);
+        changes.setLineWrap(true);
+        changes.setWrapStyleWord(true);
+        changes.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        changes.setText("Verificando se há uma nova versão...");
 
-    progress.setMinimum(0);
-    progress.setMaximum(100);
-    progress.setValue(0);
-    progress.setStringPainted(false);
+        progress.setMinimum(0);
+        progress.setMaximum(100);
+        progress.setValue(0);
+        progress.setStringPainted(false);
 
-    action.setText("Aguarde...");
-    action.setEnabled(false);
-    history.setText("Histórico");
+        action.setText("Aguarde...");
+        action.setEnabled(false);
+        history.setText("Histórico");
 
-    getContentPane().setBackground(Color.WHITE);
+        getContentPane().setBackground(Color.WHITE);
     }
 
     /**
@@ -102,16 +104,19 @@ public class JFTelaAtualizador extends javax.swing.JFrame {
                         .addComponent(action))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(JScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-                                .addComponent(progress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(JScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                                    .addComponent(progress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(status))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(percent)
-                                    .addComponent(status))
-                                .addGap(368, 368, 368)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(percent)
+                                .addGap(160, 160, 160)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
